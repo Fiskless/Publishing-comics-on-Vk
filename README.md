@@ -27,7 +27,7 @@ response_type=token&v=current_version_api"
 
 The you'll see same page with requirements roots for getting ACCESS_TOKEN_VK:
 
-![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/vk_api_secret_key_2.png)
+![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/vk_api_secret_key.png)
 
 After that you get URL with token:
 
