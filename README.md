@@ -8,15 +8,15 @@ You need to get two secret keys: ACCESS_TOKEN_VK and CLIENT_ID_VK_APP.
 
 To get CLIENT_ID_VK_APP you need to create VKontakte application. For this follow the link [vk.com/apps](https://vk.com/apps?act=manage) and press create as shown below:
 
-![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/vk_app_creating.png)
+![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/screenshots%20fo%20README/vk_app_creating.png)
 
 Choose "Standalone application" as application platform because it is easier to use:
 
-![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/vk_app_creating_1.png)
+![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/screenshots%20fo%20README/vk_app_creating_1.png)
 
 After creating an application, if you click on the "Edit" button for a new application as shown below, you will see its CLIENT_ID_VK_APP  in the address bar:
 
-![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/vk_app_creating_2.png)
+![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/screenshots%20fo%20README/vk_app_creating_2.png)
 
 To get ACCESS_TOKEN_VK you need to get next roots:photos, groups, wall,offline and response_type is "token". This information must be indicated in URL. The example of URL for requsest shown below:
 
@@ -27,7 +27,7 @@ response_type=token&v=current_version_api"
 
 The you'll see same page with requirements roots for getting ACCESS_TOKEN_VK:
 
-![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/vk_api_secret_key.png)
+![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/screenshots%20fo%20README/vk_api_secret_key.png)
 
 After that you get URL with token:
 
@@ -43,7 +43,7 @@ $python main.py
 
  As a result of code execution you get comic on the wall of your VKontakte group as shown below:
  
- ![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/comic.png)
+ ![Image alt](https://github.com/Fiskless/Publishing-comics-on-Vk/blob/main/screenshots%20fo%20README/comic.png)
 
 
 ### Project Goals
