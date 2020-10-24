@@ -93,18 +93,25 @@ def post_comic_in_group(url, access_token):
 
 if __name__ == '__main__':
 
-    load_dotenv()
-    access_token_vk = os.getenv("ACCESS_TOKEN_VK")
 
-    urllib3.disable_warnings()
+    try:
 
-    os.makedirs('comics', exist_ok=True)
+        load_dotenv()
+        access_token_vk = os.getenv("ACCESS_TOKEN_VK")
 
-    comic_number = random.randint(1, 2374)
-    load_random_comic_from_internet(
-        'comics/comic.png',
-        f'http://xkcd.com/{comic_number}/info.0.json')
+        urllib3.disable_warnings()
 
-    post_comic_in_group('https://api.vk.com/method/wall.post', access_token_vk)
+        os.makedirs('comics', exist_ok=True)
 
-    shutil.rmtree('comics')
+        number_of_comics = 2374
+
+        comic_number = random.randint(1, number_of_comics)
+        load_random_comic_from_internet(
+            'comics/comic.png',
+            f'http://xkcd.com/{comic_number}/info.0.json')
+
+        post_comic_in_group('https://api.vk.com/method/wall.post', access_token_vk)
+
+    finally:
+
+        shutil.rmtree('comics')
