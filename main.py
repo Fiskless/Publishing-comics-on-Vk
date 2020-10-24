@@ -8,14 +8,13 @@ import shutil
 
 def load_random_comic_from_internet(filename, url):
 
-    filename = filename
     response = requests.get(url, verify=False)
     response.raise_for_status()
     picture_url = response.json()['img']
-    response_1 = requests.get(picture_url, verify=False)
-    response_1.raise_for_status()
+    response = requests.get(picture_url, verify=False)
+    response.raise_for_status()
     with open(filename, 'wb') as file:
-        file.write(response_1.content)
+        file.write(response.content)
     comment = response.json()['alt']
     title = response.json()['title']
     return comment, title
@@ -38,10 +37,10 @@ def upload_comic_from_server(url, access_token):
         }
         response = requests.post(upload_url, files=files)
         response.raise_for_status()
-        resp = response.json()
-        server = resp['server']
-        photo = resp['photo']
-        hash = resp['hash']
+        response_json_form= response.json()
+        server = response_json_form['server']
+        photo = response_json_form['photo']
+        hash = response_json_form['hash']
 
     return server, photo, hash
 
@@ -63,9 +62,9 @@ def save_comic_in_album(url, access_token):
 
     response = requests.post(url, params=params)
     response.raise_for_status()
-    resp = response.json()
-    media_id = resp['response'][0]['id']
-    owner_id = resp['response'][0]['owner_id']
+    response_json_form = response.json()
+    media_id = response_json_form['response'][0]['id']
+    owner_id = response_json_form['response'][0]['owner_id']
     return media_id, owner_id
 
 
