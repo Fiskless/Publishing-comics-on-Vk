@@ -8,8 +8,6 @@ import shutil
 
 def download_random_comic_from_internet(filename, url):
 
-    filename = filename
-
     response = requests.get(url, verify=False)
     response.raise_for_status()
     picture_url = response.json()['img']
@@ -31,7 +29,7 @@ def get_comic_data_from_server(url, access_token, vk_group_id):
         'group_id': vk_group_id
     }
     response = requests.get(url, params=params)
-    print(response.text)
+    print(response.json())
     response.raise_for_status()
     upload_url = response.json()['response']['upload_url']
 
