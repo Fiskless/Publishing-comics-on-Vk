@@ -28,23 +28,23 @@ def get_comic_data_from_server(url, access_token, vk_group_id):
         'v': 5.124,
         'group_id': vk_group_id
     }
+
     response = requests.get(url, params=params)
-    print(response.json())
-    response.raise_for_status()
-    upload_url = response.json()['response']['upload_url']
+    if not response.json().get('error'):
+        upload_url = response.json()['response']['upload_url']
 
-    with open('comics/comic.png', 'rb') as file:
-        files = {
-            'photo': file
-        }
-        response = requests.post(upload_url, files=files)
-        response.raise_for_status()
-        response_json_form = response.json()
-        server = response_json_form['server']
-        photo = response_json_form['photo']
-        hash = response_json_form['hash']
+        with open('comics/comic.png', 'rb') as file:
+            files = {
+                'photo': file
+            }
+            response = requests.post(upload_url, files=files)
+            response.raise_for_status()
+            response_json_form = response.json()
+            server = response_json_form['server']
+            photo = response_json_form['photo']
+            hash = response_json_form['hash']
 
-    return server, photo, hash
+        return server, photo, hash
 
 
 def save_comic_in_album(url, access_token, vk_group_id):
@@ -65,11 +65,11 @@ def save_comic_in_album(url, access_token, vk_group_id):
         }
 
     response = requests.post(url, params=params)
-    response.raise_for_status()
-    response_json_form = response.json()['response'][0]
-    media_id = response_json_form['id']
-    owner_id = response_json_form['owner_id']
-    return media_id, owner_id
+    if not response.json().get('error'):
+        response_json_form = response.json()['response'][0]
+        media_id = response_json_form['id']
+        owner_id = response_json_form['owner_id']
+        return media_id, owner_id
 
 
 def post_comic_in_group(url, access_token, vk_group_id):
@@ -92,7 +92,6 @@ def post_comic_in_group(url, access_token, vk_group_id):
         }
 
     response = requests.post(url, params=params)
-    response.raise_for_status()
 
 
 if __name__ == '__main__':
