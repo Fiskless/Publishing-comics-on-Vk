@@ -127,6 +127,7 @@ if __name__ == '__main__':
                             vk_group_id)
 
     except requests.HTTPError:
+
         print('Your request is not successfull')
 
     finally:
