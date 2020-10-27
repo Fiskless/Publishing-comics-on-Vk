@@ -10,9 +10,10 @@ def download_random_comic_from_internet(filename, url):
 
     response = requests.get(url, verify=False)
     response.raise_for_status()
-    picture_url = response.json()['img']
-    comment = response.json()['alt']
-    title = response.json()['title']
+    response_dict_form = response.json()
+    picture_url = response_dict_form['img']
+    comment = response_dict_form['alt']
+    title = response_dict_form['title']
     response = requests.get(picture_url, verify=False)
     response.raise_for_status()
     with open(filename, 'wb') as file:
@@ -30,8 +31,9 @@ def get_comic_data_from_server(url, access_token, vk_group_id):
     }
 
     response = requests.get(url, params=params)
-    if not response.json().get('error'):
-        upload_url = response.json()['response']['upload_url']
+    response_dict_form = response.json()
+    if not response_dict_form.get('error'):
+        upload_url = response_dict_form['response']['upload_url']
 
         with open('comics/comic.png', 'rb') as file:
             files = {
@@ -39,10 +41,10 @@ def get_comic_data_from_server(url, access_token, vk_group_id):
             }
             response = requests.post(upload_url, files=files)
             response.raise_for_status()
-            response_json_form = response.json()
-            server = response_json_form['server']
-            photo = response_json_form['photo']
-            hash = response_json_form['hash']
+            response_dict_form = response.json()
+            server = response_dict_form['server']
+            photo = response_dict_form['photo']
+            hash = response_dict_form['hash']
 
         return server, photo, hash
 
@@ -66,9 +68,9 @@ def save_comic_in_album(url, access_token, vk_group_id):
 
     response = requests.post(url, params=params)
     if not response.json().get('error'):
-        response_json_form = response.json()['response'][0]
-        media_id = response_json_form['id']
-        owner_id = response_json_form['owner_id']
+        response_dict_form = response.json()['response'][0]
+        media_id = response_dict_form['id']
+        owner_id = response_dict_form['owner_id']
         return media_id, owner_id
 
 
