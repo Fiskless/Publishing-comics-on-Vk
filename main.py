@@ -10,10 +10,10 @@ def download_random_comic_from_internet(filename, url):
 
     response = requests.get(url, verify=False)
     response.raise_for_status()
-    response_dict_form = response.json()
-    picture_url = response_dict_form['img']
-    comment = response_dict_form['alt']
-    title = response_dict_form['title']
+    random_comics = response.json()
+    picture_url = random_comics['img']
+    comment = random_comics['alt']
+    title = random_comics['title']
     response = requests.get(picture_url, verify=False)
     response.raise_for_status()
     with open(filename, 'wb') as file:
@@ -31,9 +31,9 @@ def get_comic_data_from_server(url, access_token, vk_group_id):
     }
 
     response = requests.get(url, params=params)
-    response_dict_form = response.json()
-    if not response_dict_form.get('error'):
-        upload_url = response_dict_form['response']['upload_url']
+    information_to_get_picture_url = response.json()
+    if not information_to_get_picture_url.get('error'):
+        upload_url = information_to_get_picture_url['response']['upload_url']
 
         with open('comics/comic.png', 'rb') as file:
             files = {
@@ -41,10 +41,10 @@ def get_comic_data_from_server(url, access_token, vk_group_id):
             }
             response = requests.post(upload_url, files=files)
             response.raise_for_status()
-            response_dict_form = response.json()
-            server = response_dict_form['server']
-            photo = response_dict_form['photo']
-            hash = response_dict_form['hash']
+            information_to_load_picture = response.json()
+            server = information_to_load_picture['server']
+            photo = information_to_load_picture['photo']
+            hash = information_to_load_picture['hash']
 
         return server, photo, hash
 
@@ -68,9 +68,9 @@ def save_comic_in_album(url, access_token, vk_group_id):
 
     response = requests.post(url, params=params)
     if not response.json().get('error'):
-        response_dict_form = response.json()['response'][0]
-        media_id = response_dict_form['id']
-        owner_id = response_dict_form['owner_id']
+        information_to_post_comic = response.json()['response'][0]
+        media_id = information_to_post_comic['id']
+        owner_id = information_to_post_comic['owner_id']
         return media_id, owner_id
 
 
