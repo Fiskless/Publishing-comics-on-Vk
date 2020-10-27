@@ -4,6 +4,7 @@ import urllib3
 from dotenv import load_dotenv
 import random
 import shutil
+import sys
 
 
 def download_random_comic_from_internet(filename, url):
@@ -32,21 +33,21 @@ def get_comic_data_from_server(url, access_token, vk_group_id):
 
     response = requests.get(url, params=params)
     information_to_get_picture_url = response.json()
-    if not information_to_get_picture_url.get('error'):
-        upload_url = information_to_get_picture_url['response']['upload_url']
+    if information_to_get_picture_url.get('error'):
+        raise requests.HTTPError
+    upload_url = information_to_get_picture_url['response']['upload_url']
+    with open('comics/comic.png', 'rb') as file:
+        files = {
+            'photo': file
+        }
+        response = requests.post(upload_url, files=files)
+        response.raise_for_status()
+        information_to_load_picture = response.json()
+        server = information_to_load_picture['server']
+        photo = information_to_load_picture['photo']
+        hash = information_to_load_picture['hash']
 
-        with open('comics/comic.png', 'rb') as file:
-            files = {
-                'photo': file
-            }
-            response = requests.post(upload_url, files=files)
-            response.raise_for_status()
-            information_to_load_picture = response.json()
-            server = information_to_load_picture['server']
-            photo = information_to_load_picture['photo']
-            hash = information_to_load_picture['hash']
-
-        return server, photo, hash
+    return server, photo, hash
 
 
 def save_comic_in_album(url, access_token, vk_group_id):
@@ -67,11 +68,14 @@ def save_comic_in_album(url, access_token, vk_group_id):
         }
 
     response = requests.post(url, params=params)
-    if not response.json().get('error'):
-        information_to_post_comic = response.json()['response'][0]
-        media_id = information_to_post_comic['id']
-        owner_id = information_to_post_comic['owner_id']
-        return media_id, owner_id
+
+    informatiom_about_comic = response.json()
+    if informatiom_about_comic.get('error'):
+        raise requests.HTTPError
+    information_to_post_comic = informatiom_about_comic['response'][0]
+    media_id = information_to_post_comic['id']
+    owner_id = information_to_post_comic['owner_id']
+    return media_id, owner_id
 
 
 def post_comic_in_group(url, access_token, vk_group_id):
@@ -94,6 +98,10 @@ def post_comic_in_group(url, access_token, vk_group_id):
         }
 
     response = requests.post(url, params=params)
+    if response.json().get('error'):
+        raise requests.HTTPError
+
+
 
 
 if __name__ == '__main__':
@@ -120,6 +128,9 @@ if __name__ == '__main__':
         post_comic_in_group('https://api.vk.com/method/wall.post',
                             access_token_vk,
                             vk_group_id)
+
+    except requests.HTTPError:
+        print('Your request is not successfull')
 
     finally:
 
