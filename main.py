@@ -33,7 +33,7 @@ def get_comic_data_from_server(url, access_token, vk_group_id):
     response = requests.get(url, params=params)
     information_to_get_picture_url = response.json()
     if information_to_get_picture_url.get('error'):
-        raise requests.HTTPError
+        raise requests.exceptions.HTTPError
     upload_url = information_to_get_picture_url['response']['upload_url']
     with open('comics/comic.png', 'rb') as file:
         files = {
@@ -70,7 +70,7 @@ def save_comic_in_album(url, access_token, vk_group_id):
 
     informatiom_about_comic = response.json()
     if informatiom_about_comic.get('error'):
-        raise requests.HTTPError
+        raise requests.exceptions.HTTPError
     information_to_post_comic = informatiom_about_comic['response'][0]
     media_id = information_to_post_comic['id']
     owner_id = information_to_post_comic['owner_id']
@@ -98,7 +98,7 @@ def post_comic_in_group(url, access_token, vk_group_id):
 
     response = requests.post(url, params=params)
     if response.json().get('error'):
-        raise requests.HTTPError
+        raise requests.exceptions.HTTPError
 
 
 if __name__ == '__main__':
@@ -126,7 +126,7 @@ if __name__ == '__main__':
                             access_token_vk,
                             vk_group_id)
 
-    except requests.HTTPError:
+    except requests.exceptions.HTTPError:
 
         print('Your request is not successfull')
 
