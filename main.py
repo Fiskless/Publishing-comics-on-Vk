@@ -4,7 +4,6 @@ import urllib3
 from dotenv import load_dotenv
 import random
 import shutil
-import sys
 
 
 def download_random_comic_from_internet(filename, url):
@@ -100,8 +99,6 @@ def post_comic_in_group(url, access_token, vk_group_id):
     response = requests.post(url, params=params)
     if response.json().get('error'):
         raise requests.HTTPError
-
-
 
 
 if __name__ == '__main__':
